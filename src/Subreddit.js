@@ -1,29 +1,24 @@
-import React, { useMemo } from 'react';
-import { useMachine } from '@xstate/react';
-import { createSubredditMachine } from './machines/subredditMachine';
+import React from 'react';
+import { useService } from '@xstate/react';
 
-const Subreddit = ({ name }) => {
-  // Only create the machine based on the subreddit name once
-  const subredditMachine = useMemo(() => {
-    return createSubredditMachine(name);
-  }, [name]);
-
-  const [current, send] = useMachine(subredditMachine);
+const Subreddit = ({ service }) => {
+  const [current, send] = useService(service)
+  const { subreddit, posts, lastUpdated } = current.context;
 
   if (current.matches('failure')) {
     return (
       <div>
+        <h2>{subreddit}</h2>
         Failed to load posts.{' '}
         <button onClick={_ => send('RETRY')}>Retry?</button>
       </div>
     );
   }
 
-  const { subreddit, posts, lastUpdated } = current.context;
 
   return (
     <section
-      data-machine={subredditMachine.id}
+      data-machine={service.id}
       data-state={current.toStrings().join(' ')}
     >
       <>

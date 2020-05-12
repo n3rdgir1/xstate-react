@@ -4,7 +4,7 @@ import { redditMachine } from './machines/redditMachine';
 import './App.css';
 import Subreddit from './Subreddit';
 
-const subreddits = ['frontend', 'reactjs', 'vuejs'];
+const subreddits = ['frontend', 'reactjs', 'vuejs', 'oaiewhtoeaiht'];
 
 const App = () => {
   const [current, send] = useMachine(redditMachine);
@@ -27,7 +27,7 @@ const App = () => {
       </header>
       <section>
         {current.matches('idle') && <h1>Select a subreddit</h1>}
-        {subreddit && <Subreddit name={subreddit} key={subreddit.id} />}
+        {subreddit && <Subreddit service={subreddit} key={subreddit.id} />}
       </section>
     </main>
   );
